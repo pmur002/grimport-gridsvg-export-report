@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html>
+<head>
+  <style type="text/css">
+    @media print {
+      body { }
+      p.img { text-align: center; page-break-inside: avoid }
+      img.CC { display: inline }
+    }
+    @media screen {
+      body { max-width: 800px; margin: auto }
+      p.img { text-align: center }
+      img.CC { display: inline }
+    }
+    p.date {
+      font-size: smaller;
+      margin: 0;
+    }
+    p.versionHistory {
+      color: gray
+    }
+    p.versionHistory a {
+      color: gray
+    }
+    p.ref {
+      text-indent: -2em;
+      padding-left: 2em;
+    }
+    p.fig {
+      text-align: left;
+    }
+    p.fig img, img.plot {
+      box-shadow: 10px 10px 20px;
+      margin-top: 10px;
+      margin-bottom: 20px;      
+    }
+  </style>
+
+  <!-- PDFjs code (more at the end of the document) -->
+  <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+
+</head>
+<body>
+  <h1>SVG In, SVG Out</h1>
+  <p>
+    <span style="font-style: italic">by Paul Murrell</span>
+    <a href="http://orcid.org"><img alt="" src="https://www.stat.auckland.ac.nz/~paul/ORCID/ORCiD.png" style="width: 16px; height: 16px; vertical-align: middle" /></a> <span style="font-family: mono; font-size: small"><a href="http://orcid.org/0000-0002-3224-8858">http://orcid.org/0000-0002-3224-8858</a></span>
+  </p>
+  <p class="date">
+    Version 1:  original publication
+  </p>
+
+  <rcode id="init" echo="FALSE" message="FALSE" results="hide">
+opts_chunk$set(comment=" ", tidy=FALSE, dpi=96)
+options(width=100)
+## For wonky desktop set up
+options(bitmapType="cairo")
+  </rcode>
+  <rcode echo="FALSE">
+    library(grid)
+  </rcode>
+
+  <hr/>
+  <p>
+    <a rel="license"
+    href="http://creativecommons.org/licenses/by/4.0/"><img class="CC"
+    alt="Creative Commons License" style="border-width:0"
+    src="https://i.creativecommons.org/l/by/4.0/88x31.png"/></a><br/><span
+    xmlns:dct="http://purl.org/dc/terms/"
+    property="dct:title">This document</span>
+    by <span xmlns:cc="http://creativecommons.org/ns#"
+    property="cc:attributionName">Paul
+    Murrell</span> is licensed under a <a rel="license"
+    href="http://creativecommons.org/licenses/by/4.0/">Creative
+    Commons Attribution 4.0 International License</a>.
+  </p>
+  <hr/>
+  <p>
+    This report discusses how to work with
+    complex SVG images in R.  We look at importing an external SVG image
+    into R with the
+    'grImport2' package, integrating the imported image with other R
+    graphics, such as plots, and exporting the result to
+    an external SVG image with the 'gridSVG' 
+    package.  We discuss some of the complications that can arise
+    with this workflow 
+    and show that Version 0.2-0 of the 'grImport2' package helps to make
+    the complications disappear.
+  </p>
+
+  <toc/>
+
+  <h2><a name="intro">Introduction</a></h2>
+  <p>
+    The 'grImport2' package (<a href="#pkg:grImport2"/>) 
+    can be used to import SVG images into R.
+    For example, the following code imports the SVG logo (in SVG format)
+    and draws it in R graphics.  The steps involved are: convert the SVG
+    image to a Cairo-based SVG image (one way to do this is with 
+    the 'rsvg' package; <a href="#pkg:rsvg"/>); 
+    read the Cairo-based SVG into R with
+    <code>readPicture()</code>; and draw the image in R with 
+    <code>grid.picture()</code>.
+  </p>
+  <rcode fig.width="3" fig.height="3" message="FALSE">
+library(grImport2)
+library(rsvg)
+rsvg_svg("svg-logo-v.svg", "svg-logo-v-cairo.svg")
+SVGlogo <- readPicture("svg-logo-v-cairo.svg")
+grid.picture(SVGlogo)
+  </rcode>
+  <p>
+    The value of being able to import external SVG images like this is
+    that you can then integrate them with other R graphics, such as plots.
+    For example, the following code places the SVG logo in the top-right
+    corner of a 'lattice' plot (<a href="#pkg:lattice"/>).  
+    This can be used, for example,
+    to add a company or institution logo.
+  </p>
+  <rcode fig.width="5" fig.height="5">
+library(lattice)
+xyplot(mpg ~ disp, mtcars,
+       panel=function(...) {
+           panel.xyplot(...)
+           grid.picture(SVGlogo, x=1, y=1, just=c("right", "top"),
+                        width=unit(2, "cm"), height=unit(2, "cm"))
+       })
+  </rcode>
+  <p>
+    Producing SVG <em>output</em> from R is useful because SVG is
+    a <em>vector</em> format, so it produces a nicer (smoother) 
+    image at any size.
+    The plot above is a PNG image and we can see, for example,
+    jagged edges on the letters in the SVG logo.  
+    The plot below is an SVG version, 
+    produced using the <code>svg()</code> device, and the result is
+    much smoother.
+  </p>
+  <rcode dev="svg" echo="FALSE" fig.width="5" fig.height="5">
+xyplot(mpg ~ disp, mtcars,
+       panel=function(...) {
+           panel.xyplot(...)
+           grid.picture(SVGlogo, x=1, y=1, just=c("right", "top"),
+                        width=unit(2, "cm"), height=unit(2, "cm"))
+       })
+  </rcode>
+  
+  <h2><a name="complex">Complex SVG</a></h2>
+  <p>
+    External SVG images may contain more sophisticated graphical 
+    features.  For example, the R logo, shown below, consists of
+    two paths, each of which is filled with a (subtle) colour gradient.
+  </p>
+  <p class="fig">
+    <img src="Rlogo.svg" alt="The R logo (SVG format)" 
+         width="288" height="288"/>
+  </p>
+  <p>
+    The 'grImport2' package will happily import images with more
+    sophisticated features, but drawing the image in R is a problem
+    because R graphics does not support some of these features.
+  </p>
+  <p>
+    For example, the following code imports the R logo (SVG image)
+    and draws it within R.  Because R graphics does not support colour
+    gradient fills, drawing the R logo produces no output at all!
+  </p>
+  <rcode fig.width="3" fig.height="3" message="FALSE">
+rsvg_svg("Rlogo.svg", "Rlogo-cairo.svg")
+Rlogo <- readPicture("Rlogo-cairo.svg")
+grid.picture(Rlogo)
+grid.rect()
+  </rcode>
+  <p>
+    The following code demonstrates that we have imported the R logo
+    correctly.  In this code, we override the colour gradient fills in
+    the original image
+    and just draw the outlines of the two paths that we have imported
+    from the logo.
+  </p>
+  <rcode fig.width="3" fig.height="3" message="FALSE">
+grid.picture(Rlogo, gpFUN=function(gp) { gpar(col="black") })
+  </rcode>
+  <p>
+    The 'gridSVG' package (<a name="#pkg:gridSVG"/>) 
+    can help us here.  This package can export 
+    ('grid') R graphics in SVG format including
+    sophisticated graphics features.
+    The following code draws the R logo again, in SVG format, but this time it 
+    uses 'gridSVG' to do the drawing.  The steps involved are:
+    open a 'gridSVG' graphics device, with <code>gridsvg()</code>; and
+    supply <code>ext="gridSVG"</code> to <code>grid.picture()</code>.
+  </p>
+  <rcode fig.keep="FALSE" warning="FALSE" message="FALSE">
+library(gridSVG)
+gridsvg("Rlogo-gridSVG.svg", width=3, height=3, res=96)
+grid.picture(Rlogo, ext="gridSVG")
+dev.off()
+  </rcode>
+  <p class="fig">
+    <img src="Rlogo-gridSVG.svg"/>
+  </p>
+  <p>
+    The following code demonstrates the full value of these tools
+    (at least conceptually):  
+    an external SVG image, including sophisticated features,
+    has been imported into R, integrated with an R plot, and exported in
+    SVG format, complete with sophisticated features.
+  </p>
+  <rcode fig.keep="FALSE" warning="FALSE" message="FALSE">  
+gridsvg("Rplot-gridSVG.svg", width=5, height=5, res=96)
+xyplot(mpg ~ disp, mtcars,
+       panel=function(...) {
+           panel.xyplot(...)
+           grid.picture(Rlogo, x=1, y=1, just=c("right", "top"),
+                        width=unit(2, "cm"), height=unit(1.55, "cm"),
+                        ext="gridSVG")
+       })
+dev.off()
+  </rcode>
+  <p class="fig">
+    <img src="Rplot-gridSVG.svg"/>
+  </p>
+
+  <h2><a name="context">Context-sensitive SVG</a></h2>
+  <p>
+    This section side-tracks into a discussion of some of the details
+    about sophisticated SVG graphics features.  We might not choose
+    to make use of these details deliberately when generating our own
+    SVG images, but they become important when we import an external 
+    SVG image because we have no control over whether the person who
+    created the external image has made use of these details.
+  </p>
+  <p>
+    A complication that can arise when generating SVG from R 
+    is the export of "context-sensitive" graphics features,
+    such as an SVG mask.
+    A mask is a shape that is used to affect the transparency of
+    another shape;  wherever the mask is white, the other shape is
+    opaque, wherever the mask is black, the other shape is transparent
+    and (what makes masks different from clipping paths), 
+    wherever the mask is grey, the other shape is translucent.
+  </p>
+  <p>
+    The following code and images demonstrate how a mask works.
+    We will work with a mask that consists of three vertical bars
+    side by side, with
+    one filled black, one filled grey, and one filled white.
+  </p>
+  <rcode>
+maskShape <- rectGrob(x=0:2/3, width=1/3, just="left", 
+                      gp=gpar(col=NA, fill=c("black", "grey", "white")))
+  </rcode>
+  <rcode echo="FALSE" fig.width="3" fig.height="3">
+grid.draw(maskShape)
+  </rcode>
+  <p>
+    The shape that we are going to apply this mask to is a red circle,
+    with the name <code>"c"</code>.
+  </p>
+  <rcode>
+shape <- circleGrob(name="c", r=.4, gp=gpar(col=NA, fill=hcl(0, 60, 60)))
+  </rcode>
+  <rcode echo="FALSE" fig.width="3" fig.height="3">
+grid.draw(shape)
+  </rcode>
+  <p>
+    The following code generates an SVG image consisting of a blue 
+    background, with the red circle drawn on top, and the mask
+    applied to the red circle.  The steps involved are:
+    "register" the mask and associate it with a label;
+    draw the shape that we want to mask; 
+    apply the mask to the shape (referring to the shape by its name
+    and the mask by its label).
+    The result is that the left slice 
+    of the circle becomes fully transparent, the middle slice of the
+    circle becomes translucent (the result is a mix of the red circle
+    and the blue background), and the right slice of the circle
+    is fully opaque.
+  </p>
+  <rcode fig.keep="FALSE">
+gridsvg("mask.svg", width=3, height=3, res=96)
+grid.rect(gp=gpar(col=NA, fill=hcl(240, 60, 60)))
+registerMask("image-slice", mask(maskShape))
+grid.draw(shape)
+grid.mask("c", label="image-slice")
+dev.off()
+  </rcode>
+  <p class="fig">
+    <img src="mask.svg"/>
+  </p>
+  <p>
+    The next examples demonstrate the idea of "context sensitivity".
+    First of all, we will modify the code to draw the circle (and apply
+    the mask) within a 'grid' viewport that only occupies the right half
+    of the image.  The result is that most of the circle is
+    opaque because the mask that we are applying was registered 
+    relative to the whole image - the mask occupies all of the image
+    while the circle only occupies the right half of the image.
+  </p>
+  <rcode fig.keep="FALSE">
+gridsvg("mask-page.svg", width=3, height=3, res=96)
+grid.rect(gp=gpar(col=NA, fill=hcl(240, 60, 60)))
+pushViewport(viewport(x=.5, width=.5, just="left"))
+grid.draw(shape)
+grid.mask("c", label="image-slice")
+dev.off()
+  </rcode>
+  <p class="fig">
+    <a name="bad-circle">
+      <img src="mask-page.svg"/>
+    </a>
+  </p>
+  <p>
+    In the following code, we register the mask within the 
+    viewport as well as drawing the circle within the viewport.
+    The result now is a smaller version of the original masked circle
+    because the mask that we are applying was registered relative
+    to the viewport - both the mask and the circle ionly occupy the
+    right half of the image.
+  </p>
+  <rcode fig.keep="FALSE">
+gridsvg("mask-vp.svg", width=3, height=3, res=96)
+grid.rect(gp=gpar(col=NA, fill=hcl(240, 60, 60)))
+pushViewport(viewport(x=.5, width=.5, just="left"))
+registerMask("vp-slice", mask(maskShape))
+grid.draw(shape)
+grid.mask("c", label="vp-slice")
+dev.off()
+  </rcode>
+  <p class="fig">
+    <a name="good-circle">
+      <img src="mask-vp.svg"/>
+    </a>
+  </p>
+  <p>
+    While this level of control is interesting and powerful, it may 
+    not be something we choose to make use of deliberately.
+    However, when we import an external SVG image with 'grImport2'
+    whether we end up with an image that makes use of these
+    "context-sensitive" features, like masks, is out of our control.
+  </p>
+
+  <h2><a name="import-context">Exporting imported context-sensitive SVG</a></h2>
+  <p>
+    In this section, we bring together the import of SVG images with
+    sophisticated graphics features and the export of those SVG images
+    (to SVG).
+  </p>
+  <p>
+    The following image is a diagram that was drawn in Adobe Illustrator
+    (thanks to Artem Sokolov).  
+    The goal is to import this PDF image
+    into R and combine it with an R plot.
+  </p>
+  <p class="fig">
+    <img src="p1.png" alt="Diagram drawn in Adoble Illustrator"/>
+  </p>
+  <p>
+    The first step is to generate a Cairo-based SVG version of the
+    PDF image.  One way to do that is with the <code>pdf2svg</code>
+    tool (http://manpages.ubuntu.com/manpages/cosmic/man1/pdf2svg.1.html).
+    The SVG image is shown below so that we can see it is the same as
+    the original PDF image. 
+  </p>
+  <p class="fig">
+    <img src="p1.svg" alt="SVG version of diagram"/>
+  </p>
+  <p>
+    An important feature of this SVG image is that that translucent
+    blue fill is achieved by way of an SVG mask (and an SVG filter) applied
+    to an opaque blue fill.  This is an example of an image that
+    contains sophisticated features over which we have no control.
+    The presence of the mask (and filter)
+    becomes apparent when we import the image to R and attempt
+    to render it with R graphics.  R graphics supports translucent colours,
+    but it does not support masks (or filters), so we only get the
+    solid blue fill from the SVG image when we draw it in R.
+  </p>
+  <rcode fig.width="3" fig.height="3">
+p1 <- readPicture("p1.svg")
+grid.picture(p1)
+  </rcode>
+  <p>
+    The following code demonstrates that we can
+    fix the problem by exporting the
+    imported image to SVG using 'gridSVG', which does support 
+    masks (and filters).  The <code>delayContent</code> argument
+    is significant, but it will be explained in a moment.
+  </p>
+  <rcode fig.keep="FALSE">
+gridsvg("p1-gridSVG.svg", width=3, height=3, res=96)
+grid.picture(p1, ext="gridSVG", delayContent=FALSE)
+dev.off()
+  </rcode>
+  <p class="fig">
+    <img src="p1-gridSVG.svg"/>
+  </p>
+  <p>
+    The following code draws the imported image again (in SVG format,
+    using 'gridSVG'), but this time the imported image is combined with
+    a 'ggplot2' plot (<a href="#pkg:ggplot2"/>) 
+    using the 'cowplot' package (<a href="#pkg:cowplot"/>).
+    We have to call <code>pictureGrob()</code> rather than
+    <code>grid.picture()</code> because we need a 'grid' grob to 
+    pass to <code>plot_grid()</code>.  The result is not good - part of 
+    the imported image has disappeared!
+  </p>
+  <rcode message="FALSE">
+library(cowplot)
+  </rcode>
+  <rcode fig.keep="FALSE">
+gridsvg("p1-gridSVG-right.svg", width=6, height=3, res=96)
+grid.rect(gp=gpar(col=NA, fill="grey80"))
+ggplot <- qplot(disp, mpg, data=mtcars)
+p1grob <- pictureGrob(p1, ext="gridSVG", delayContent=FALSE)
+plot_grid(ggplot, p1grob)
+dev.off()
+  </rcode>
+  <p class="fig">
+    <img src="p1-gridSVG-right.svg"/>
+  </p>
+  <p>
+    This is a manifestation of context-sensitive SVG features
+    (when exporting to SVG with 'gridSVG'); it is just a more
+    complicated example of the 
+    <a href="#bad-circle">circle drawn on half the page masked
+    by a mask that is relative to the whole page</a> from the previous section.
+    The problem is that the mask (and filter) within the imported
+    image is being registered when we call <code>pictureGrob()</code>,
+    which is relative to the whole page, but the imported image
+    is being drawn by 'cowplot' in only half of the page.
+  </p>
+  <p>
+    The solution is 
+    to make sure that the masks (and filters) in the imported
+    image are registered in the correct viewport; 
+    just like when the <a href="#good-circle">circle and the mask
+    were both relative to half the page</a> in the previous section.
+    The way that we do that is by specifying <code>delayContent=TRUE</code> 
+    to <code>pictureGrob()</code>;  this means that registration only happens
+    when the imported image is drawn (not when we call 
+    <code>pictureGrob()</code>), which means that registration happens
+    in the correct viewport.
+  </p>
+  <rcode fig.keep="FALSE">
+gridsvg("p1-gridSVG-right-delay.svg", width=6, height=3, res=96)
+grid.rect(gp=gpar(col=NA, fill="grey80"))
+ggplot <- qplot(disp, mpg, data=mtcars)
+p1grob <- pictureGrob(p1, ext="gridSVG", delayContent=TRUE)
+plot_grid(ggplot, p1grob)
+dev.off()
+  </rcode>
+  <p class="fig">
+    <img src="p1-gridSVG-right-delay.svg"/>
+  </p>
+  <p>
+    In the latest version of 'grImport2' (version 0.2-0), 
+    <code>delayContent=TRUE</code> is the default when
+    <code>ext="gridSVG"</code>, so the right thing should
+    happen automatically, without us having to specify the 
+    <code>delayContent</code> argument explicitly.  The 
+    following code will produce the correct result.
+  </p>
+  <rcode fig.keep="FALSE">
+gridsvg("p1-gridSVG-right-delay.svg", width=6, height=3, res=96)
+grid.rect(gp=gpar(col=NA, fill="grey80"))
+ggplot <- qplot(disp, mpg, data=mtcars)
+p1grob <- pictureGrob(p1, ext="gridSVG")
+plot_grid(ggplot, p1grob)
+dev.off()
+  </rcode>
+  
+  <h2><a name="summary">Summary</a></h2>
+  <p>
+    SVG images can contain sophisticated graphics features.
+    The 'grImport2' package allows us to import SVG images that
+    contain sophisticated features into R.
+    The 'gridSVG' package allows us to export SVG images that
+    contain sophisticated features.
+    Version 0.2-0 of the 'grImport2' package makes sure that
+    when we import an SVG image, combine the imported image with
+    other R graphics, and then export an SVG image, the imported
+    image is exported correctly.
+  </p>
+
+  <p>
+    https://www.r-project.org/logo/Rlogo.svg CC-BY-SA 4.0
+  </p>
+
+  <h2><a name="requirements">Technical requirements</a></h2>
+  <p>
+    The examples and discussion in this document relate to ...
+    grImport2_0.2-0
+    gridSVG_1.7-1
+  </p>
+  <p>
+    This report was generated within a Docker container
+    (see <a href="#Resources">Resources</a> section below).
+  </p>
+
+  <h2><a name="Resources">Resources</a></h2>
+  <ul>
+    <li>
+      The <a href="grimport-gridsvg-export.cml">raw source file</a> for this
+      report, a <a href="grimport-gridsvg-export.xml">valid XML</a>
+      transformation of the source file, a <a
+      href="grimport-gridsvg-export.Rhtml">'knitr' document</a> generated from
+      the XML file, 
+      two <a href="toc.R">R</a> <a href="bib.R">files</a> and
+      the <a href="grimport-gridsvg-export.bib">bibtex file</a>
+      that are used to generate the table of contents and reference sections,
+      two <a href="common.xsl">XSL</a> <a
+      href="knitr.xsl">files</a> and an 
+      <a href="knit.R">R file</a> that are used to transform the XML to
+      the 'knitr' document, and a <a href="Makefile">Makefile</a> that
+      contains code for the other transformations and coordinates
+      everything.  
+      These materials are also available
+      on <a href="https://github.com/pmur002/grimport-gridsvg-export-report/releases/tag/v1">github</a>.
+    </li>
+    <li>
+      This report was generated within a 
+      <a href="https://www.docker.com/">Docker</a> container.
+      The Docker command to build the report is included in the Makefile above.
+      The Docker image for the container is available from
+      <a href="https://hub.docker.com/r/pmur002/grimport-gridsvg-export/">Docker Hub</a>;
+      alternatively, the image can be rebuilt from its 
+      <a href="Dockerfile">Dockerfile</a>.
+    </li>
+  </ul>
+
+  <h2>How to cite this document</h2>
+  <p>
+    Murrell, P. (2019). "SVG In, SVG Out" 
+    Technical Report 2019-??, Department of Statistics, The University of Auckland. 
+    Version 1.
+    [ <a href="how-to-cite.bib">bib</a> |
+      <a href="http://dx.doi.org/">DOI</a> | 
+      <a href="https://stattech.wordpress.fos.auckland.ac.nz/2019/">http</a> ]
+  </p>
+
+  <h2><a name="references">References</a></h2>
+  <ul style="list-style-type: none">
+    <li>
+      <a name="R"/>
+    </li>
+    <li>
+      <a name="pkg:grImport2"/>
+    </li>
+    <li>
+      <a name="pkg:rsvg"/>
+    </li>
+    <li>
+      <a name="pkg:lattice"/>
+    </li>
+    <li>
+      <a name="pkg:gridSVG"/>
+    </li>
+    <li>
+      <a name="pkg:ggplot2"/>
+    </li>
+    <li>
+      <a name="pkg:cowplot"/>
+    </li>
+  </ul>
+
+  <hr/>
+  <p>
+    <a rel="license"
+    href="http://creativecommons.org/licenses/by/4.0/"><img class="CC"
+    alt="Creative Commons License" style="border-width:0"
+    src="https://i.creativecommons.org/l/by/4.0/88x31.png"/></a><br/><span
+    xmlns:dct="http://purl.org/dc/terms/"
+    property="dct:title">This document</span>
+    by <span xmlns:cc="http://creativecommons.org/ns#"
+    property="cc:attributionName">Paul
+    Murrell</span> is licensed under a <a rel="license"
+    href="http://creativecommons.org/licenses/by/4.0/">Creative
+    Commons Attribution 4.0 International License</a>.
+  </p>
+
+  <script><![CDATA[
+  // Use async/await so that PDF files loaded one at a time
+  async function loadPDFs() {
+    var pdfcanvas = document.querySelectorAll("canvas.pdf");
+    var i;
+    for (i=0; i < pdfcanvas.length; i++) {
+        var canvas = pdfcanvas[i];
+        var canvasid = canvas.id;
+        console.log("loop " + canvasid);
+        var pdf = await pdfjsLib.getDocument(canvasid + '.pdf');
+        var page = await pdf.getPage(1);
+        console.log("pdf" + canvasid);
+        var scale = canvas.getAttribute("scale");
+        if (!scale) {
+            scale = 100/72;
+        }
+        var viewport = page.getViewport(scale);
+        var context = canvas.getContext('2d');
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+        var renderContext = {
+            canvasContext: context,
+            viewport: viewport
+        };
+        page.render(renderContext);
+    }
+  }
+  loadPDFs();
+  ]]>
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+
+grImport2 can import complex SVG
+
+R cannot replicate complex SVG
+
+gridSVG can generate complex SVG
+
+this means that we can import complex SVG with grImport2
+and output it with  gridSVG
+
+an example of complex SVG is a mask.
+This is complex both because it is a mask and because the 
+definition of a mask is context-sensitive (to the current grid viewport).
+Show example
+
+when we import from SVG and export to SVG we have to be careful
+when we create the SVG definitions to export.
+By default, this happens when we create a pictureGrob.
+If we are exporting SVG that contains a mask, we need to create
+the pictureGrob within the right viewport or it will not be right.
+
+
