@@ -184,7 +184,7 @@
 <span class="hl std">SVGlogo</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">readPicture</span><span class="hl std">(</span><span class="hl str">&quot;svg-logo-v-cairo.svg&quot;</span><span class="hl std">)</span>
 <span class="hl kwd">grid.picture</span><span class="hl std">(SVGlogo)</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-2-1.png" title="The SVG logo drawn by R" alt="The SVG logo drawn by R" class="plot" /></div></div>
     <p>
     The value of being able to import external SVG images like this is
     that you can then integrate them with other R graphics, such as plots.
@@ -201,7 +201,7 @@
                         <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl kwd">unit</span><span class="hl std">(</span><span class="hl num">2</span><span class="hl std">,</span> <span class="hl str">&quot;cm&quot;</span><span class="hl std">),</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl kwd">unit</span><span class="hl std">(</span><span class="hl num">2</span><span class="hl std">,</span> <span class="hl str">&quot;cm&quot;</span><span class="hl std">))</span>
        <span class="hl std">})</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-3-1.png" title="An R plot with the SVG logo in the top-right corner" alt="An R plot with the SVG logo in the top-right corner" class="plot" /></div></div>
     <p>
     Producing SVG <em>output</em> from R is useful because SVG is
     a <em>vector</em> format, so it produces a nicer (smoother) 
@@ -212,7 +212,7 @@
     produced using the <code>svg()</code> device, and the result is
     much smoother.
   </p>
-<div class="chunk" id="unnamed-chunk-4"><div class="rimage default"><img src="figure/unnamed-chunk-4-1.svg" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" class="plot" /></div></div>
+<div class="chunk" id="unnamed-chunk-4"><div class="rimage default"><img src="figure/unnamed-chunk-4-1.svg" title="An R plot with the SVG logo in the top-right corner (SVG format)" alt="An R plot with the SVG logo in the top-right corner (SVG format)" class="plot" /></div></div>
     <h2>
       <a name="complex">2. Complex SVG</a>
     </h2>
@@ -239,7 +239,7 @@
 <span class="hl kwd">grid.picture</span><span class="hl std">(Rlogo)</span>
 <span class="hl kwd">grid.rect</span><span class="hl std">()</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-5-1.png" title="The R logo (drawn unsuccessfully in R)" alt="The R logo (drawn unsuccessfully in R)" class="plot" /></div></div>
     <p>
     The following code demonstrates that we have imported the R logo
     correctly.  In this code, we override the colour gradient fills in
@@ -249,7 +249,7 @@
   </p>
 <div class="chunk" id="unnamed-chunk-6"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">grid.picture</span><span class="hl std">(Rlogo,</span> <span class="hl kwc">gpFUN</span><span class="hl std">=</span><span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">gp</span><span class="hl std">) {</span> <span class="hl kwd">gpar</span><span class="hl std">(</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">&quot;black&quot;</span><span class="hl std">) })</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-6-1.png" title="The outline of the R logo (drawn in R)" alt="The outline of the R logo (drawn in R)" class="plot" /></div></div>
     <p>
     The 'gridSVG' package (<a name="#pkg:gridSVG"></a>) 
     can help us here.  This package can export 
@@ -321,7 +321,7 @@
                       <span class="hl kwc">gp</span><span class="hl std">=</span><span class="hl kwd">gpar</span><span class="hl std">(</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl num">NA</span><span class="hl std">,</span> <span class="hl kwc">fill</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;black&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;grey&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;white&quot;</span><span class="hl std">)))</span>
 </pre></div>
 </div></div>
-<div class="chunk" id="unnamed-chunk-10"><div class="rimage default"><img src="figure/unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" class="plot" /></div></div>
+<div class="chunk" id="unnamed-chunk-10"><div class="rimage default"><img src="figure/unnamed-chunk-10-1.png" title="A mask (black, grey, white vertical bars)" alt="A mask (black, grey, white vertical bars)" class="plot" /></div></div>
     <p>
     The shape that we are going to apply this mask to is a red circle,
     with the name <code>"c"</code>.
@@ -329,7 +329,7 @@
 <div class="chunk" id="unnamed-chunk-11"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">shape</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">circleGrob</span><span class="hl std">(</span><span class="hl kwc">name</span><span class="hl std">=</span><span class="hl str">&quot;c&quot;</span><span class="hl std">,</span> <span class="hl kwc">r</span><span class="hl std">=</span><span class="hl num">.4</span><span class="hl std">,</span> <span class="hl kwc">gp</span><span class="hl std">=</span><span class="hl kwd">gpar</span><span class="hl std">(</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl num">NA</span><span class="hl std">,</span> <span class="hl kwc">fill</span><span class="hl std">=</span><span class="hl kwd">hcl</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">60</span><span class="hl std">,</span> <span class="hl num">60</span><span class="hl std">)))</span>
 </pre></div>
 </div></div>
-<div class="chunk" id="unnamed-chunk-12"><div class="rimage default"><img src="figure/unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" class="plot" /></div></div>
+<div class="chunk" id="unnamed-chunk-12"><div class="rimage default"><img src="figure/unnamed-chunk-12-1.png" title="A red circle" alt="A red circle" class="plot" /></div></div>
     <p>
     The following code generates an SVG image consisting of a blue 
     background, with the red circle drawn on top, and the mask
@@ -447,7 +447,7 @@
 <div class="chunk" id="unnamed-chunk-16"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">p1</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">readPicture</span><span class="hl std">(</span><span class="hl str">&quot;p1.svg&quot;</span><span class="hl std">)</span>
 <span class="hl kwd">grid.picture</span><span class="hl std">(p1)</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-16-1.png" title="plot of chunk unnamed-chunk-16" alt="plot of chunk unnamed-chunk-16" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-16-1.png" title="An imported diagram drawn in R" alt="An imported diagram drawn in R" class="plot" /></div></div>
     <p>
     The following code demonstrates that we can
     fix the problem by exporting the

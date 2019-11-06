@@ -102,7 +102,7 @@ options(bitmapType="cairo")
     <code>readPicture()</code>; and draw the image in R with 
     <code>grid.picture()</code>.
   </p>
-  <rcode fig.width="3" fig.height="3" message="FALSE">
+  <rcode fig.cap="The SVG logo drawn by R" fig.width="3" fig.height="3" message="FALSE">
 library(grImport2)
 library(rsvg)
 rsvg_svg("svg-logo-v.svg", "svg-logo-v-cairo.svg")
@@ -117,7 +117,7 @@ grid.picture(SVGlogo)
     This can be used, for example,
     to add a company or institution logo.
   </p>
-  <rcode fig.width="5" fig.height="5">
+  <rcode fig.cap="An R plot with the SVG logo in the top-right corner" fig.width="5" fig.height="5">
 library(lattice)
 xyplot(mpg ~ disp, mtcars,
        panel=function(...) {
@@ -136,7 +136,7 @@ xyplot(mpg ~ disp, mtcars,
     produced using the <code>svg()</code> device, and the result is
     much smoother.
   </p>
-  <rcode dev="svg" echo="FALSE" fig.width="5" fig.height="5">
+  <rcode fig.cap="An R plot with the SVG logo in the top-right corner (SVG format)" dev="svg" echo="FALSE" fig.width="5" fig.height="5">
 xyplot(mpg ~ disp, mtcars,
        panel=function(...) {
            panel.xyplot(...)
@@ -165,7 +165,7 @@ xyplot(mpg ~ disp, mtcars,
     and draws it within R.  Because R graphics does not support colour
     gradient fills, drawing the R logo produces no output at all!
   </p>
-  <rcode fig.width="3" fig.height="3" message="FALSE">
+  <rcode fig.cap="The R logo (drawn unsuccessfully in R)" fig.width="3" fig.height="3" message="FALSE">
 rsvg_svg("Rlogo.svg", "Rlogo-cairo.svg")
 Rlogo <- readPicture("Rlogo-cairo.svg")
 grid.picture(Rlogo)
@@ -178,7 +178,7 @@ grid.rect()
     and just draw the outlines of the two paths that we have imported
     from the logo.
   </p>
-  <rcode fig.width="3" fig.height="3" message="FALSE">
+  <rcode fig.cap="The outline of the R logo (drawn in R)" fig.width="3" fig.height="3" message="FALSE">
 grid.picture(Rlogo, gpFUN=function(gp) { gpar(col="black") })
   </rcode>
   <p>
@@ -251,7 +251,7 @@ dev.off()
 maskShape <- rectGrob(x=0:2/3, width=1/3, just="left", 
                       gp=gpar(col=NA, fill=c("black", "grey", "white")))
   </rcode>
-  <rcode echo="FALSE" fig.width="3" fig.height="3">
+  <rcode fig.cap="A mask (black, grey, white vertical bars)" echo="FALSE" fig.width="3" fig.height="3">
 grid.draw(maskShape)
   </rcode>
   <p>
@@ -261,7 +261,7 @@ grid.draw(maskShape)
   <rcode>
 shape <- circleGrob(name="c", r=.4, gp=gpar(col=NA, fill=hcl(0, 60, 60)))
   </rcode>
-  <rcode echo="FALSE" fig.width="3" fig.height="3">
+  <rcode fig.cap="A red circle" echo="FALSE" fig.width="3" fig.height="3">
 grid.draw(shape)
   </rcode>
   <p>
@@ -382,7 +382,7 @@ dev.off()
     but it does not support masks (or filters), so we only get the
     solid blue fill from the SVG image when we draw it in R.
   </p>
-  <rcode fig.width="3" fig.height="3">
+  <rcode fig.cap="An imported diagram drawn in R" fig.width="3" fig.height="3">
 p1 <- readPicture("p1.svg")
 grid.picture(p1)
   </rcode>
