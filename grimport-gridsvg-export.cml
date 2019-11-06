@@ -84,8 +84,8 @@ options(bitmapType="cairo")
     an external SVG image with the 'gridSVG' 
     package.  We discuss some of the complications that can arise
     with this workflow 
-    and show that Version 0.2-0 of the 'grImport2' package helps to make
-    the complications disappear.
+    and show that Version 0.2-0 of the 'grImport2' package helps to deal with
+    those complications.
   </p>
 
   <toc/>
@@ -94,7 +94,8 @@ options(bitmapType="cairo")
   <p>
     The 'grImport2' package (<a href="#pkg:grImport2"/>) 
     can be used to import SVG images into R.
-    For example, the following code imports the SVG logo (in SVG format)
+    For example, the following code imports the 
+    <a href="https://www.w3.org/2009/08/svg-logos.html">SVG logo</a> 
     and draws it in R graphics.  The steps involved are: convert the SVG
     image to a Cairo-based SVG image (one way to do this is with 
     the 'rsvg' package; <a href="#pkg:rsvg"/>); 
@@ -114,8 +115,8 @@ grid.picture(SVGlogo)
     that you can then integrate them with other R graphics, such as plots.
     For example, the following code places the SVG logo in the top-right
     corner of a 'lattice' plot (<a href="#pkg:lattice"/>).  
-    This can be used, for example,
-    to add a company or institution logo.
+    This technique can be used, for example,
+    to add a company or institution logo to a plot.
   </p>
   <rcode fig.cap="An R plot with the SVG logo in the top-right corner" fig.width="5" fig.height="5">
 library(lattice)
@@ -144,11 +145,20 @@ xyplot(mpg ~ disp, mtcars,
                         width=unit(2, "cm"), height=unit(2, "cm"))
        })
   </rcode>
+  <p>
+    In summary, it is useful to be able to import SVG images into R because
+    we may want to include images that have been created outside
+    of R as part of an R plot.  It is also useful
+    to be able to generate SVG output from R because
+    that produces the best visual result in web pages.
+  </p>
   
   <h2><a name="complex">Complex SVG</a></h2>
   <p>
     External SVG images may contain more sophisticated graphical 
-    features.  For example, the R logo, shown below, consists of
+    features.  For example, the 
+    <a href="https://www.r-project.org/logo/Rlogo.svg">R logo</a>, 
+    shown below, consists of
     two paths, each of which is filled with a (subtle) colour gradient.
   </p>
   <p class="fig">
@@ -182,7 +192,7 @@ grid.rect()
 grid.picture(Rlogo, gpFUN=function(gp) { gpar(col="black") })
   </rcode>
   <p>
-    The 'gridSVG' package (<a name="#pkg:gridSVG"/>) 
+    The 'gridSVG' package (<a href="#pkg:gridSVG"/>) 
     can help us here.  This package can export 
     ('grid') R graphics in SVG format including
     sophisticated graphics features.
@@ -269,7 +279,7 @@ grid.draw(shape)
     background, with the red circle drawn on top, and the mask
     applied to the red circle.  The steps involved are:
     "register" the mask and associate it with a label;
-    draw the shape that we want to mask; 
+    draw the shape that we want to mask; and
     apply the mask to the shape (referring to the shape by its name
     and the mask by its label).
     The result is that the left slice 
@@ -319,7 +329,7 @@ dev.off()
     viewport as well as drawing the circle within the viewport.
     The result now is a smaller version of the original masked circle
     because the mask that we are applying was registered relative
-    to the viewport - both the mask and the circle ionly occupy the
+    to the viewport - both the mask and the circle only occupy the
     right half of the image.
   </p>
   <rcode fig.keep="FALSE">
@@ -349,7 +359,8 @@ dev.off()
   <h2><a name="import-context">Exporting imported context-sensitive SVG</a></h2>
   <p>
     In this section, we bring together the import of SVG images with
-    sophisticated graphics features and the export of those SVG images
+    sophisticated and context-sensitive 
+    graphics features and the export of those SVG images
     (to SVG).
   </p>
   <p>
@@ -362,9 +373,10 @@ dev.off()
     <img src="p1.png" alt="Diagram drawn in Adoble Illustrator"/>
   </p>
   <p>
-    The first step is to generate a Cairo-based SVG version of the
+    We cannot directly import PDF images, so
+    the first step is to generate a Cairo-based SVG version of the
     PDF image.  One way to do that is with the <code>pdf2svg</code>
-    tool (http://manpages.ubuntu.com/manpages/cosmic/man1/pdf2svg.1.html).
+    tool (<a href="#pdf2svg"/>).
     The SVG image is shown below so that we can see it is the same as
     the original PDF image. 
   </p>
@@ -375,7 +387,8 @@ dev.off()
     An important feature of this SVG image is that that translucent
     blue fill is achieved by way of an SVG mask (and an SVG filter) applied
     to an opaque blue fill.  This is an example of an image that
-    contains sophisticated features over which we have no control.
+    contains sophisticated context-sensitive 
+    features over which we have no control.
     The presence of the mask (and filter)
     becomes apparent when we import the image to R and attempt
     to render it with R graphics.  R graphics supports translucent colours,
@@ -391,7 +404,7 @@ grid.picture(p1)
     fix the problem by exporting the
     imported image to SVG using 'gridSVG', which does support 
     masks (and filters).  The <code>delayContent</code> argument
-    is significant, but it will be explained in a moment.
+    is significant, but it will be explained later.
   </p>
   <rcode fig.keep="FALSE">
 gridsvg("p1-gridSVG.svg", width=3, height=3, res=96)
@@ -449,6 +462,8 @@ dev.off()
     when the imported image is drawn (not when we call 
     <code>pictureGrob()</code>), which means that registration happens
     in the correct viewport.
+    The code below demonstrates this and the resulting image is now
+    correct.
   </p>
   <rcode fig.keep="FALSE">
 gridsvg("p1-gridSVG-right-delay.svg", width=6, height=3, res=96)
@@ -469,7 +484,7 @@ dev.off()
     <code>ext="gridSVG"</code>, so the right thing should
     happen automatically, without us having to specify the 
     <code>delayContent</code> argument explicitly.  The 
-    following code will produce the correct result.
+    following code will also produce the correct result.
   </p>
   <rcode fig.keep="FALSE">
 gridsvg("p1-gridSVG-right-delay.svg", width=6, height=3, res=96)
@@ -491,10 +506,6 @@ dev.off()
     when we import an SVG image, combine the imported image with
     other R graphics, and then export an SVG image, the imported
     image is exported correctly.
-  </p>
-
-  <p>
-    https://www.r-project.org/logo/Rlogo.svg CC-BY-SA 4.0
   </p>
 
   <h2><a name="requirements">Technical requirements</a></h2>
@@ -571,6 +582,9 @@ dev.off()
     </li>
     <li>
       <a name="pkg:cowplot"/>
+    </li>
+    <li>
+      <a name="pdf2svg"/>
     </li>
   </ul>
 
