@@ -97,8 +97,6 @@
       margin-bottom: 20px;      
     }
   </style>
-    <!-- PDFjs code (more at the end of the document) -->
-    <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
   </head>
   <body>
     <h1>SVG In, SVG Out</h1>
@@ -240,8 +238,8 @@
     because R graphics does not support some of these features.
   </p>
     <p>
-    For example, the following code imports the R logo (SVG image)
-    and draws it within R.  Because R graphics does not support colour
+    For example, the following code imports the R logo (SVG format)
+    and draws it within R, but because R graphics does not support colour
     gradient fills, drawing the R logo produces no output at all!
   </p>
 <div class="chunk" id="unnamed-chunk-5"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">rsvg_svg</span><span class="hl std">(</span><span class="hl str">&quot;Rlogo.svg&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Rlogo-cairo.svg&quot;</span><span class="hl std">)</span>
@@ -428,37 +426,30 @@
     <p>
     The following image is a diagram that was drawn in Adobe Illustrator
     (thanks to Artem Sokolov).  
-    The goal is to import this PDF image
+    The original image was PDF, but we cannot directly import PDF images, so
+    the image has been converted to a Cairo-based SVG version 
+    using the <code>pdf2svg</code>
+    tool (<a href="#pdf2svg">Barton and Flaschen, 2013</a>).
+    The goal is to import this image
     into R and combine it with an R plot.
   </p>
     <p class="fig">
-      <img src="p1.png" alt="Diagram drawn in Adoble Illustrator">
+      <img src="test1.svg" alt="SVG version of diagram">
     </p>
     <p>
-    We cannot directly import PDF images, so
-    the first step is to generate a Cairo-based SVG version of the
-    PDF image.  One way to do that is with the <code>pdf2svg</code>
-    tool (<a href="#pdf2svg">Barton and Flaschen, 2013</a>).
-    The SVG image is shown below so that we can see it is the same as
-    the original PDF image. 
-  </p>
-    <p class="fig">
-      <img src="p1.svg" alt="SVG version of diagram">
-    </p>
-    <p>
-    An important feature of this SVG image is that that translucent
+    An important feature of this SVG image is that that light
     blue fill is achieved by way of an SVG mask (and an SVG filter) applied
-    to an opaque blue fill.  This is an example of an image that
+    to an opaque dark blue fill.  This is an example of an image that
     contains sophisticated context-sensitive 
     features over which we have no control.
     The presence of the mask (and filter)
     becomes apparent when we import the image to R and attempt
     to render it with R graphics.  R graphics supports translucent colours,
     but it does not support masks (or filters), so we only get the
-    solid blue fill from the SVG image when we draw it in R.
+    dark blue fill from the SVG image when we draw it in R.
   </p>
-<div class="chunk" id="unnamed-chunk-16"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">p1</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">readPicture</span><span class="hl std">(</span><span class="hl str">&quot;p1.svg&quot;</span><span class="hl std">)</span>
-<span class="hl kwd">grid.picture</span><span class="hl std">(p1)</span>
+<div class="chunk" id="unnamed-chunk-16"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">test1</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">readPicture</span><span class="hl std">(</span><span class="hl str">&quot;test1.svg&quot;</span><span class="hl std">)</span>
+<span class="hl kwd">grid.picture</span><span class="hl std">(test1)</span>
 </pre></div>
 </div><div class="rimage default"><img src="figure/unnamed-chunk-16-1.png" title="An imported diagram drawn in R" alt="An imported diagram drawn in R" class="plot" /></div></div>
     <p>
@@ -468,13 +459,13 @@
     masks (and filters).  The <code>delayContent</code> argument
     is significant, but it will be explained later.
   </p>
-<div class="chunk" id="unnamed-chunk-17"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;p1-gridSVG.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
-<span class="hl kwd">grid.picture</span><span class="hl std">(p1,</span> <span class="hl kwc">ext</span><span class="hl std">=</span><span class="hl str">&quot;gridSVG&quot;</span><span class="hl std">,</span> <span class="hl kwc">delayContent</span><span class="hl std">=</span><span class="hl num">FALSE</span><span class="hl std">)</span>
+<div class="chunk" id="unnamed-chunk-17"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;test1-gridSVG.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
+<span class="hl kwd">grid.picture</span><span class="hl std">(test1,</span> <span class="hl kwc">ext</span><span class="hl std">=</span><span class="hl str">&quot;gridSVG&quot;</span><span class="hl std">,</span> <span class="hl kwc">delayContent</span><span class="hl std">=</span><span class="hl num">FALSE</span><span class="hl std">)</span>
 <span class="hl kwd">dev.off</span><span class="hl std">()</span>
 </pre></div>
 </div></div>
     <p class="fig">
-      <img src="p1-gridSVG.svg" alt="The diagram imported and rendered in R">
+      <img src="test1-gridSVG.svg" alt="The diagram imported and rendered in R">
     </p>
     <p>
     The following code draws the imported image again (in SVG format,
@@ -489,16 +480,16 @@
 <div class="chunk" id="unnamed-chunk-18"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(cowplot)</span>
 </pre></div>
 </div></div>
-<div class="chunk" id="unnamed-chunk-19"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;p1-gridSVG-right.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">6</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
+<div class="chunk" id="unnamed-chunk-19"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;test1-gridSVG-right.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">6</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
 <span class="hl kwd">grid.rect</span><span class="hl std">(</span><span class="hl kwc">gp</span><span class="hl std">=</span><span class="hl kwd">gpar</span><span class="hl std">(</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl num">NA</span><span class="hl std">,</span> <span class="hl kwc">fill</span><span class="hl std">=</span><span class="hl str">&quot;grey80&quot;</span><span class="hl std">))</span>
 <span class="hl std">ggplot</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">qplot</span><span class="hl std">(disp, mpg,</span> <span class="hl kwc">data</span><span class="hl std">=mtcars)</span>
-<span class="hl std">p1grob</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">pictureGrob</span><span class="hl std">(p1,</span> <span class="hl kwc">ext</span><span class="hl std">=</span><span class="hl str">&quot;gridSVG&quot;</span><span class="hl std">,</span> <span class="hl kwc">delayContent</span><span class="hl std">=</span><span class="hl num">FALSE</span><span class="hl std">)</span>
-<span class="hl kwd">plot_grid</span><span class="hl std">(ggplot, p1grob)</span>
+<span class="hl std">test1grob</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">pictureGrob</span><span class="hl std">(test1,</span> <span class="hl kwc">ext</span><span class="hl std">=</span><span class="hl str">&quot;gridSVG&quot;</span><span class="hl std">,</span> <span class="hl kwc">delayContent</span><span class="hl std">=</span><span class="hl num">FALSE</span><span class="hl std">)</span>
+<span class="hl kwd">plot_grid</span><span class="hl std">(ggplot, test1grob)</span>
 <span class="hl kwd">dev.off</span><span class="hl std">()</span>
 </pre></div>
 </div></div>
     <p class="fig">
-      <img src="p1-gridSVG-right.svg" alt="The diagram drawn alongside a plot,                but registered on the whole page">
+      <img src="test1-gridSVG-right.svg" alt="The diagram drawn alongside a plot,                but registered on the whole page">
     </p>
     <p>
     This is a manifestation of context-sensitive SVG features
@@ -525,16 +516,16 @@
     The code below demonstrates this and the resulting image is now
     correct.
   </p>
-<div class="chunk" id="unnamed-chunk-20"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;p1-gridSVG-right-delay.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">6</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
+<div class="chunk" id="unnamed-chunk-20"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;test1-gridSVG-right-delay.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">6</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
 <span class="hl kwd">grid.rect</span><span class="hl std">(</span><span class="hl kwc">gp</span><span class="hl std">=</span><span class="hl kwd">gpar</span><span class="hl std">(</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl num">NA</span><span class="hl std">,</span> <span class="hl kwc">fill</span><span class="hl std">=</span><span class="hl str">&quot;grey80&quot;</span><span class="hl std">))</span>
 <span class="hl std">ggplot</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">qplot</span><span class="hl std">(disp, mpg,</span> <span class="hl kwc">data</span><span class="hl std">=mtcars)</span>
-<span class="hl std">p1grob</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">pictureGrob</span><span class="hl std">(p1,</span> <span class="hl kwc">ext</span><span class="hl std">=</span><span class="hl str">&quot;gridSVG&quot;</span><span class="hl std">,</span> <span class="hl kwc">delayContent</span><span class="hl std">=</span><span class="hl num">TRUE</span><span class="hl std">)</span>
-<span class="hl kwd">plot_grid</span><span class="hl std">(ggplot, p1grob)</span>
+<span class="hl std">test1grob</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">pictureGrob</span><span class="hl std">(test1,</span> <span class="hl kwc">ext</span><span class="hl std">=</span><span class="hl str">&quot;gridSVG&quot;</span><span class="hl std">,</span> <span class="hl kwc">delayContent</span><span class="hl std">=</span><span class="hl num">TRUE</span><span class="hl std">)</span>
+<span class="hl kwd">plot_grid</span><span class="hl std">(ggplot, test1grob)</span>
 <span class="hl kwd">dev.off</span><span class="hl std">()</span>
 </pre></div>
 </div></div>
     <p class="fig">
-      <img src="p1-gridSVG-right-delay.svg" alt="The diagram drawn alongside a plot,                with the diagram registered in the viewport it is drawn within">
+      <img src="test1-gridSVG-right-delay.svg" alt="The diagram drawn alongside a plot,                with the diagram registered in the viewport it is drawn within">
     </p>
     <p>
     In the latest version of 'grImport2' (version 0.2-0), 
@@ -544,11 +535,11 @@
     <code>delayContent</code> argument explicitly.  The 
     following code will also produce the correct result.
   </p>
-<div class="chunk" id="unnamed-chunk-21"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;p1-gridSVG-right-delay.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">6</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
+<div class="chunk" id="unnamed-chunk-21"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;test1-gridSVG-right-delay.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">6</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
 <span class="hl kwd">grid.rect</span><span class="hl std">(</span><span class="hl kwc">gp</span><span class="hl std">=</span><span class="hl kwd">gpar</span><span class="hl std">(</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl num">NA</span><span class="hl std">,</span> <span class="hl kwc">fill</span><span class="hl std">=</span><span class="hl str">&quot;grey80&quot;</span><span class="hl std">))</span>
 <span class="hl std">ggplot</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">qplot</span><span class="hl std">(disp, mpg,</span> <span class="hl kwc">data</span><span class="hl std">=mtcars)</span>
-<span class="hl std">p1grob</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">pictureGrob</span><span class="hl std">(p1,</span> <span class="hl kwc">ext</span><span class="hl std">=</span><span class="hl str">&quot;gridSVG&quot;</span><span class="hl std">)</span>
-<span class="hl kwd">plot_grid</span><span class="hl std">(ggplot, p1grob)</span>
+<span class="hl std">test1grob</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">pictureGrob</span><span class="hl std">(test1,</span> <span class="hl kwc">ext</span><span class="hl std">=</span><span class="hl str">&quot;gridSVG&quot;</span><span class="hl std">)</span>
+<span class="hl kwd">plot_grid</span><span class="hl std">(ggplot, test1grob)</span>
 <span class="hl kwd">dev.off</span><span class="hl std">()</span>
 </pre></div>
 </div></div>
@@ -730,34 +721,5 @@ Wilke, C. O. (2018).
     Murrell</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative
     Commons Attribution 4.0 International License</a>.
   </p>
-    <script>
-  // Use async/await so that PDF files loaded one at a time
-  async function loadPDFs() {
-    var pdfcanvas = document.querySelectorAll("canvas.pdf");
-    var i;
-    for (i=0; i < pdfcanvas.length; i++) {
-        var canvas = pdfcanvas[i];
-        var canvasid = canvas.id;
-        console.log("loop " + canvasid);
-        var pdf = await pdfjsLib.getDocument(canvasid + '.pdf');
-        var page = await pdf.getPage(1);
-        console.log("pdf" + canvasid);
-        var scale = canvas.getAttribute("scale");
-        if (!scale) {
-            scale = 100/72;
-        }
-        var viewport = page.getViewport(scale);
-        var context = canvas.getContext('2d');
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
-        var renderContext = {
-            canvasContext: context,
-            viewport: viewport
-        };
-        page.render(renderContext);
-    }
-  }
-  loadPDFs();
-  </script>
   </body>
 </html>

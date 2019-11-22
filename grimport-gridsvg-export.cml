@@ -36,9 +36,6 @@
     }
   </style>
 
-  <!-- PDFjs code (more at the end of the document) -->
-  <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
-
 </head>
 <body>
   <h1>SVG In, SVG Out</h1>
@@ -171,8 +168,8 @@ xyplot(mpg ~ disp, mtcars,
     because R graphics does not support some of these features.
   </p>
   <p>
-    For example, the following code imports the R logo (SVG image)
-    and draws it within R.  Because R graphics does not support colour
+    For example, the following code imports the R logo (SVG format)
+    and draws it within R, but because R graphics does not support colour
     gradient fills, drawing the R logo produces no output at all!
   </p>
   <rcode fig.cap="The R logo (drawn unsuccessfully in R)" fig.width="3" fig.height="3" message="FALSE">
@@ -366,38 +363,31 @@ dev.off()
   <p>
     The following image is a diagram that was drawn in Adobe Illustrator
     (thanks to Artem Sokolov).  
-    The goal is to import this PDF image
+    The original image was PDF, but we cannot directly import PDF images, so
+    the image has been converted to a Cairo-based SVG version 
+    using the <code>pdf2svg</code>
+    tool (<a href="#pdf2svg"/>).
+    The goal is to import this image
     into R and combine it with an R plot.
   </p>
   <p class="fig">
-    <img src="p1.png" alt="Diagram drawn in Adoble Illustrator"/>
+    <img src="test1.svg" alt="SVG version of diagram"/>
   </p>
   <p>
-    We cannot directly import PDF images, so
-    the first step is to generate a Cairo-based SVG version of the
-    PDF image.  One way to do that is with the <code>pdf2svg</code>
-    tool (<a href="#pdf2svg"/>).
-    The SVG image is shown below so that we can see it is the same as
-    the original PDF image. 
-  </p>
-  <p class="fig">
-    <img src="p1.svg" alt="SVG version of diagram"/>
-  </p>
-  <p>
-    An important feature of this SVG image is that that translucent
+    An important feature of this SVG image is that that light
     blue fill is achieved by way of an SVG mask (and an SVG filter) applied
-    to an opaque blue fill.  This is an example of an image that
+    to an opaque dark blue fill.  This is an example of an image that
     contains sophisticated context-sensitive 
     features over which we have no control.
     The presence of the mask (and filter)
     becomes apparent when we import the image to R and attempt
     to render it with R graphics.  R graphics supports translucent colours,
     but it does not support masks (or filters), so we only get the
-    solid blue fill from the SVG image when we draw it in R.
+    dark blue fill from the SVG image when we draw it in R.
   </p>
   <rcode fig.cap="An imported diagram drawn in R" fig.width="3" fig.height="3">
-p1 <- readPicture("p1.svg")
-grid.picture(p1)
+test1 <- readPicture("test1.svg")
+grid.picture(test1)
   </rcode>
   <p>
     The following code demonstrates that we can
@@ -407,12 +397,12 @@ grid.picture(p1)
     is significant, but it will be explained later.
   </p>
   <rcode fig.keep="FALSE">
-gridsvg("p1-gridSVG.svg", width=3, height=3, res=96)
-grid.picture(p1, ext="gridSVG", delayContent=FALSE)
+gridsvg("test1-gridSVG.svg", width=3, height=3, res=96)
+grid.picture(test1, ext="gridSVG", delayContent=FALSE)
 dev.off()
   </rcode>
   <p class="fig">
-    <img src="p1-gridSVG.svg" alt="The diagram imported and rendered in R"/>
+    <img src="test1-gridSVG.svg" alt="The diagram imported and rendered in R"/>
   </p>
   <p>
     The following code draws the imported image again (in SVG format,
@@ -428,15 +418,15 @@ dev.off()
 library(cowplot)
   </rcode>
   <rcode fig.keep="FALSE">
-gridsvg("p1-gridSVG-right.svg", width=6, height=3, res=96)
+gridsvg("test1-gridSVG-right.svg", width=6, height=3, res=96)
 grid.rect(gp=gpar(col=NA, fill="grey80"))
 ggplot <- qplot(disp, mpg, data=mtcars)
-p1grob <- pictureGrob(p1, ext="gridSVG", delayContent=FALSE)
-plot_grid(ggplot, p1grob)
+test1grob <- pictureGrob(test1, ext="gridSVG", delayContent=FALSE)
+plot_grid(ggplot, test1grob)
 dev.off()
   </rcode>
   <p class="fig">
-    <img src="p1-gridSVG-right.svg" 
+    <img src="test1-gridSVG-right.svg" 
          alt="The diagram drawn alongside a plot, 
               but registered on the whole page"/>
   </p>
@@ -466,15 +456,15 @@ dev.off()
     correct.
   </p>
   <rcode fig.keep="FALSE">
-gridsvg("p1-gridSVG-right-delay.svg", width=6, height=3, res=96)
+gridsvg("test1-gridSVG-right-delay.svg", width=6, height=3, res=96)
 grid.rect(gp=gpar(col=NA, fill="grey80"))
 ggplot <- qplot(disp, mpg, data=mtcars)
-p1grob <- pictureGrob(p1, ext="gridSVG", delayContent=TRUE)
-plot_grid(ggplot, p1grob)
+test1grob <- pictureGrob(test1, ext="gridSVG", delayContent=TRUE)
+plot_grid(ggplot, test1grob)
 dev.off()
   </rcode>
   <p class="fig">
-    <img src="p1-gridSVG-right-delay.svg"
+    <img src="test1-gridSVG-right-delay.svg"
          alt="The diagram drawn alongside a plot, 
               with the diagram registered in the viewport it is drawn within"/>
   </p>
@@ -487,11 +477,11 @@ dev.off()
     following code will also produce the correct result.
   </p>
   <rcode fig.keep="FALSE">
-gridsvg("p1-gridSVG-right-delay.svg", width=6, height=3, res=96)
+gridsvg("test1-gridSVG-right-delay.svg", width=6, height=3, res=96)
 grid.rect(gp=gpar(col=NA, fill="grey80"))
 ggplot <- qplot(disp, mpg, data=mtcars)
-p1grob <- pictureGrob(p1, ext="gridSVG")
-plot_grid(ggplot, p1grob)
+test1grob <- pictureGrob(test1, ext="gridSVG")
+plot_grid(ggplot, test1grob)
 dev.off()
   </rcode>
   
@@ -602,37 +592,6 @@ dev.off()
     href="http://creativecommons.org/licenses/by/4.0/">Creative
     Commons Attribution 4.0 International License</a>.
   </p>
-
-  <script><![CDATA[
-  // Use async/await so that PDF files loaded one at a time
-  async function loadPDFs() {
-    var pdfcanvas = document.querySelectorAll("canvas.pdf");
-    var i;
-    for (i=0; i < pdfcanvas.length; i++) {
-        var canvas = pdfcanvas[i];
-        var canvasid = canvas.id;
-        console.log("loop " + canvasid);
-        var pdf = await pdfjsLib.getDocument(canvasid + '.pdf');
-        var page = await pdf.getPage(1);
-        console.log("pdf" + canvasid);
-        var scale = canvas.getAttribute("scale");
-        if (!scale) {
-            scale = 100/72;
-        }
-        var viewport = page.getViewport(scale);
-        var context = canvas.getContext('2d');
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
-        var renderContext = {
-            canvasContext: context,
-            viewport: viewport
-        };
-        page.render(renderContext);
-    }
-  }
-  loadPDFs();
-  ]]>
-  </script>
 
 </body>
 </html>

@@ -19,7 +19,8 @@ Rscript = Rscript
 	$(Rscript) knit.R $*.Rhtml
 
 docker:
-	# Special ./make-report shell script to bring up Xvfb
+	cp ../../grImport2_0.2-0.tar.gz .
+	sudo docker build -t pmur002/grimport-gridsvg-export .
 	sudo docker run -v $(shell pwd):/home/work/ -w /home/work --rm pmur002/grimport-gridsvg-export make grimport-gridsvg-export.html
 
 web:
