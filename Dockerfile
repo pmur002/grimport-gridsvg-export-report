@@ -35,7 +35,8 @@ RUN Rscript -e 'library(devtools); install_version("jpeg", "0.1-8", repos="https
 RUN Rscript -e 'library(devtools); install_version("base64enc", "0.1-3", repos="https://cran.rstudio.com/")'
 
 # Using COPY will update (invalidate cache) if the tar ball has been modified!
-COPY grImport2_0.2-0.tar.gz /tmp/
-RUN R CMD INSTALL /tmp/grImport2_0.2-0.tar.gz
+# COPY grImport2_0.2-0.tar.gz /tmp/
+# RUN R CMD INSTALL /tmp/grImport2_0.2-0.tar.gz
+RUN Rscript -e 'remotes::install_svn("svn://r-forge.r-project.org/svnroot/grimport", subdir="pkg/grImport2", revision=101)'
 
 

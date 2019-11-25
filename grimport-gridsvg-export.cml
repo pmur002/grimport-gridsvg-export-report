@@ -500,9 +500,11 @@ dev.off()
 
   <h2><a name="requirements">Technical requirements</a></h2>
   <p>
-    The examples and discussion in this document relate to ...
-    grImport2_0.2-0
-    gridSVG_1.7-1
+    The examples and discussion in this document relate to 
+    grImport2_0.2-0, which is available from
+    <a href="https://r-forge.r-project.org/projects/grimport/">R-Forge</a>, and
+    gridSVG_1.7-1, which is available from
+    <a href="http://cran.stat.auckland.ac.nz/web/packages/gridSVG/index.html">CRAN</a>.
   </p>
   <p>
     This report was generated within a Docker container

@@ -1,9 +1,6 @@
 
 + Created docker image with (NOTE ONLY lowercase in image tag) ...
 
-  # Bit of setup to get local copies of in-development pacakges
-  # cp ../../grImport2_0.2-0.tar.gz .
-
   sudo docker build -t pmur002/grimport-gridsvg-export .
 
   - NOTE that this is probably best run on Uni office machine
