@@ -35,7 +35,7 @@
 + To make image available on DockerHub ...
 
   sudo docker login
-  sudo docker push pmur002/gridgeometry
+  sudo docker push pmur002/grimport-gridsvg-export
 
 + Build report with ...
 
