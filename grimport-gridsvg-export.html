@@ -110,7 +110,12 @@
       </span>
     </p>
     <p class="date">
-    Version 1:  original publication
+    Version 2:  
+Tuesday 14 April 2020
+  </p>
+    <p class="date versionHistory">
+    Version 1:  original publication<br>
+    Version 2:  added date
   </p>
 
 
@@ -177,13 +182,13 @@
     <code>readPicture()</code>; and draw the image in R with 
     <code>grid.picture()</code>.
   </p>
-<div class="chunk" id="unnamed-chunk-2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(grImport2)</span>
+<div class="chunk" id="unnamed-chunk-3"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(grImport2)</span>
 <span class="hl kwd">library</span><span class="hl std">(rsvg)</span>
 <span class="hl kwd">rsvg_svg</span><span class="hl std">(</span><span class="hl str">&quot;svg-logo-v.svg&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;svg-logo-v-cairo.svg&quot;</span><span class="hl std">)</span>
 <span class="hl std">SVGlogo</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">readPicture</span><span class="hl std">(</span><span class="hl str">&quot;svg-logo-v-cairo.svg&quot;</span><span class="hl std">)</span>
 <span class="hl kwd">grid.picture</span><span class="hl std">(SVGlogo)</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-2-1.png" title="The SVG logo drawn by R" alt="The SVG logo drawn by R" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-3-1.png" title="The SVG logo drawn by R" alt="The SVG logo drawn by R" class="plot" /></div></div>
     <p>
     The value of being able to import external SVG images like this is
     that you can then integrate them with other R graphics, such as plots.
@@ -192,7 +197,7 @@
     This technique can be used, for example,
     to add a company or institution logo to a plot.
   </p>
-<div class="chunk" id="unnamed-chunk-3"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(lattice)</span>
+<div class="chunk" id="unnamed-chunk-4"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(lattice)</span>
 <span class="hl kwd">xyplot</span><span class="hl std">(mpg</span> <span class="hl opt">~</span> <span class="hl std">disp, mtcars,</span>
        <span class="hl kwc">panel</span><span class="hl std">=</span><span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">...</span><span class="hl std">) {</span>
            <span class="hl kwd">panel.xyplot</span><span class="hl std">(...)</span>
@@ -200,7 +205,7 @@
                         <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl kwd">unit</span><span class="hl std">(</span><span class="hl num">2</span><span class="hl std">,</span> <span class="hl str">&quot;cm&quot;</span><span class="hl std">),</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl kwd">unit</span><span class="hl std">(</span><span class="hl num">2</span><span class="hl std">,</span> <span class="hl str">&quot;cm&quot;</span><span class="hl std">))</span>
        <span class="hl std">})</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-3-1.png" title="An R plot with the SVG logo in the top-right corner" alt="An R plot with the SVG logo in the top-right corner" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-4-1.png" title="An R plot with the SVG logo in the top-right corner" alt="An R plot with the SVG logo in the top-right corner" class="plot" /></div></div>
     <p>
     Producing SVG <em>output</em> from R is useful because SVG is
     a <em>vector</em> format, so it produces a nicer (smoother) 
@@ -211,7 +216,7 @@
     produced using the <code>svg()</code> device, and the result is
     much smoother.
   </p>
-<div class="chunk" id="unnamed-chunk-4"><div class="rimage default"><img src="figure/unnamed-chunk-4-1.svg" title="An R plot with the SVG logo in the top-right corner (SVG format)" alt="An R plot with the SVG logo in the top-right corner (SVG format)" class="plot" /></div></div>
+<div class="chunk" id="unnamed-chunk-5"><div class="rimage default"><img src="figure/unnamed-chunk-5-1.svg" title="An R plot with the SVG logo in the top-right corner (SVG format)" alt="An R plot with the SVG logo in the top-right corner (SVG format)" class="plot" /></div></div>
     <p>
     In summary, it is useful to be able to import SVG images into R because
     we may want to include images that have been created outside
@@ -242,12 +247,12 @@
     and draws it within R, but because R graphics does not support colour
     gradient fills, drawing the R logo produces no output at all!
   </p>
-<div class="chunk" id="unnamed-chunk-5"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">rsvg_svg</span><span class="hl std">(</span><span class="hl str">&quot;Rlogo.svg&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Rlogo-cairo.svg&quot;</span><span class="hl std">)</span>
+<div class="chunk" id="unnamed-chunk-6"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">rsvg_svg</span><span class="hl std">(</span><span class="hl str">&quot;Rlogo.svg&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Rlogo-cairo.svg&quot;</span><span class="hl std">)</span>
 <span class="hl std">Rlogo</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">readPicture</span><span class="hl std">(</span><span class="hl str">&quot;Rlogo-cairo.svg&quot;</span><span class="hl std">)</span>
 <span class="hl kwd">grid.picture</span><span class="hl std">(Rlogo)</span>
 <span class="hl kwd">grid.rect</span><span class="hl std">()</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-5-1.png" title="The R logo (drawn unsuccessfully in R)" alt="The R logo (drawn unsuccessfully in R)" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-6-1.png" title="The R logo (drawn unsuccessfully in R)" alt="The R logo (drawn unsuccessfully in R)" class="plot" /></div></div>
     <p>
     The following code demonstrates that we have imported the R logo
     correctly.  In this code, we override the colour gradient fills in
@@ -255,9 +260,9 @@
     and just draw the outlines of the two paths that we have imported
     from the logo.
   </p>
-<div class="chunk" id="unnamed-chunk-6"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">grid.picture</span><span class="hl std">(Rlogo,</span> <span class="hl kwc">gpFUN</span><span class="hl std">=</span><span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">gp</span><span class="hl std">) {</span> <span class="hl kwd">gpar</span><span class="hl std">(</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">&quot;black&quot;</span><span class="hl std">) })</span>
+<div class="chunk" id="unnamed-chunk-7"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">grid.picture</span><span class="hl std">(Rlogo,</span> <span class="hl kwc">gpFUN</span><span class="hl std">=</span><span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">gp</span><span class="hl std">) {</span> <span class="hl kwd">gpar</span><span class="hl std">(</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">&quot;black&quot;</span><span class="hl std">) })</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-6-1.png" title="The outline of the R logo (drawn in R)" alt="The outline of the R logo (drawn in R)" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-7-1.png" title="The outline of the R logo (drawn in R)" alt="The outline of the R logo (drawn in R)" class="plot" /></div></div>
     <p>
     The 'gridSVG' package (<a href="#pkg:gridSVG">Murrell and Potter, 2019</a>) 
     can help us here.  This package can export 
@@ -268,7 +273,7 @@
     open a 'gridSVG' graphics device, with <code>gridsvg()</code>; and
     supply <code>ext="gridSVG"</code> to <code>grid.picture()</code>.
   </p>
-<div class="chunk" id="unnamed-chunk-7"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(gridSVG)</span>
+<div class="chunk" id="unnamed-chunk-8"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(gridSVG)</span>
 <span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;Rlogo-gridSVG.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
 <span class="hl kwd">grid.picture</span><span class="hl std">(Rlogo,</span> <span class="hl kwc">ext</span><span class="hl std">=</span><span class="hl str">&quot;gridSVG&quot;</span><span class="hl std">)</span>
 <span class="hl kwd">dev.off</span><span class="hl std">()</span>
@@ -284,7 +289,7 @@
     has been imported into R, integrated with an R plot, and exported in
     SVG format, complete with sophisticated features.
   </p>
-<div class="chunk" id="unnamed-chunk-8"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;Rplot-gridSVG.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">5</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">5</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
+<div class="chunk" id="unnamed-chunk-9"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;Rplot-gridSVG.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">5</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">5</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
 <span class="hl kwd">xyplot</span><span class="hl std">(mpg</span> <span class="hl opt">~</span> <span class="hl std">disp, mtcars,</span>
        <span class="hl kwc">panel</span><span class="hl std">=</span><span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">...</span><span class="hl std">) {</span>
            <span class="hl kwd">panel.xyplot</span><span class="hl std">(...)</span>
@@ -325,19 +330,19 @@
     side by side, with
     one filled black, one filled grey, and one filled white.
   </p>
-<div class="chunk" id="unnamed-chunk-9"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">maskShape</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">rectGrob</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=</span><span class="hl num">0</span><span class="hl opt">:</span><span class="hl num">2</span><span class="hl opt">/</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl opt">/</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">just</span><span class="hl std">=</span><span class="hl str">&quot;left&quot;</span><span class="hl std">,</span>
+<div class="chunk" id="unnamed-chunk-10"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">maskShape</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">rectGrob</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=</span><span class="hl num">0</span><span class="hl opt">:</span><span class="hl num">2</span><span class="hl opt">/</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl opt">/</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">just</span><span class="hl std">=</span><span class="hl str">&quot;left&quot;</span><span class="hl std">,</span>
                       <span class="hl kwc">gp</span><span class="hl std">=</span><span class="hl kwd">gpar</span><span class="hl std">(</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl num">NA</span><span class="hl std">,</span> <span class="hl kwc">fill</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;black&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;grey&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;white&quot;</span><span class="hl std">)))</span>
 </pre></div>
 </div></div>
-<div class="chunk" id="unnamed-chunk-10"><div class="rimage default"><img src="figure/unnamed-chunk-10-1.png" title="A mask (black, grey, white vertical bars)" alt="A mask (black, grey, white vertical bars)" class="plot" /></div></div>
+<div class="chunk" id="unnamed-chunk-11"><div class="rimage default"><img src="figure/unnamed-chunk-11-1.png" title="A mask (black, grey, white vertical bars)" alt="A mask (black, grey, white vertical bars)" class="plot" /></div></div>
     <p>
     The shape that we are going to apply this mask to is a red circle,
     with the name <code>"c"</code>.
   </p>
-<div class="chunk" id="unnamed-chunk-11"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">shape</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">circleGrob</span><span class="hl std">(</span><span class="hl kwc">name</span><span class="hl std">=</span><span class="hl str">&quot;c&quot;</span><span class="hl std">,</span> <span class="hl kwc">r</span><span class="hl std">=</span><span class="hl num">.4</span><span class="hl std">,</span> <span class="hl kwc">gp</span><span class="hl std">=</span><span class="hl kwd">gpar</span><span class="hl std">(</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl num">NA</span><span class="hl std">,</span> <span class="hl kwc">fill</span><span class="hl std">=</span><span class="hl kwd">hcl</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">60</span><span class="hl std">,</span> <span class="hl num">60</span><span class="hl std">)))</span>
+<div class="chunk" id="unnamed-chunk-12"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">shape</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">circleGrob</span><span class="hl std">(</span><span class="hl kwc">name</span><span class="hl std">=</span><span class="hl str">&quot;c&quot;</span><span class="hl std">,</span> <span class="hl kwc">r</span><span class="hl std">=</span><span class="hl num">.4</span><span class="hl std">,</span> <span class="hl kwc">gp</span><span class="hl std">=</span><span class="hl kwd">gpar</span><span class="hl std">(</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl num">NA</span><span class="hl std">,</span> <span class="hl kwc">fill</span><span class="hl std">=</span><span class="hl kwd">hcl</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">60</span><span class="hl std">,</span> <span class="hl num">60</span><span class="hl std">)))</span>
 </pre></div>
 </div></div>
-<div class="chunk" id="unnamed-chunk-12"><div class="rimage default"><img src="figure/unnamed-chunk-12-1.png" title="A red circle" alt="A red circle" class="plot" /></div></div>
+<div class="chunk" id="unnamed-chunk-13"><div class="rimage default"><img src="figure/unnamed-chunk-13-1.png" title="A red circle" alt="A red circle" class="plot" /></div></div>
     <p>
     The following code generates an SVG image consisting of a blue 
     background, with the red circle drawn on top, and the mask
@@ -352,7 +357,7 @@
     and the blue background), and the right slice of the circle
     is fully opaque.
   </p>
-<div class="chunk" id="unnamed-chunk-13"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;mask.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
+<div class="chunk" id="unnamed-chunk-14"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;mask.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
 <span class="hl kwd">grid.rect</span><span class="hl std">(</span><span class="hl kwc">gp</span><span class="hl std">=</span><span class="hl kwd">gpar</span><span class="hl std">(</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl num">NA</span><span class="hl std">,</span> <span class="hl kwc">fill</span><span class="hl std">=</span><span class="hl kwd">hcl</span><span class="hl std">(</span><span class="hl num">240</span><span class="hl std">,</span> <span class="hl num">60</span><span class="hl std">,</span> <span class="hl num">60</span><span class="hl std">)))</span>
 <span class="hl kwd">registerMask</span><span class="hl std">(</span><span class="hl str">&quot;image-slice&quot;</span><span class="hl std">,</span> <span class="hl kwd">mask</span><span class="hl std">(maskShape))</span>
 <span class="hl kwd">grid.draw</span><span class="hl std">(shape)</span>
@@ -372,7 +377,7 @@
     relative to the whole image - the mask occupies all of the image
     while the circle only occupies the right half of the image.
   </p>
-<div class="chunk" id="unnamed-chunk-14"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;mask-page.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
+<div class="chunk" id="unnamed-chunk-15"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;mask-page.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
 <span class="hl kwd">grid.rect</span><span class="hl std">(</span><span class="hl kwc">gp</span><span class="hl std">=</span><span class="hl kwd">gpar</span><span class="hl std">(</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl num">NA</span><span class="hl std">,</span> <span class="hl kwc">fill</span><span class="hl std">=</span><span class="hl kwd">hcl</span><span class="hl std">(</span><span class="hl num">240</span><span class="hl std">,</span> <span class="hl num">60</span><span class="hl std">,</span> <span class="hl num">60</span><span class="hl std">)))</span>
 <span class="hl kwd">pushViewport</span><span class="hl std">(</span><span class="hl kwd">viewport</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=</span><span class="hl num">.5</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">.5</span><span class="hl std">,</span> <span class="hl kwc">just</span><span class="hl std">=</span><span class="hl str">&quot;left&quot;</span><span class="hl std">))</span>
 <span class="hl kwd">grid.draw</span><span class="hl std">(shape)</span>
@@ -393,7 +398,7 @@
     to the viewport - both the mask and the circle only occupy the
     right half of the image.
   </p>
-<div class="chunk" id="unnamed-chunk-15"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;mask-vp.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
+<div class="chunk" id="unnamed-chunk-16"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;mask-vp.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
 <span class="hl kwd">grid.rect</span><span class="hl std">(</span><span class="hl kwc">gp</span><span class="hl std">=</span><span class="hl kwd">gpar</span><span class="hl std">(</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl num">NA</span><span class="hl std">,</span> <span class="hl kwc">fill</span><span class="hl std">=</span><span class="hl kwd">hcl</span><span class="hl std">(</span><span class="hl num">240</span><span class="hl std">,</span> <span class="hl num">60</span><span class="hl std">,</span> <span class="hl num">60</span><span class="hl std">)))</span>
 <span class="hl kwd">pushViewport</span><span class="hl std">(</span><span class="hl kwd">viewport</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=</span><span class="hl num">.5</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">.5</span><span class="hl std">,</span> <span class="hl kwc">just</span><span class="hl std">=</span><span class="hl str">&quot;left&quot;</span><span class="hl std">))</span>
 <span class="hl kwd">registerMask</span><span class="hl std">(</span><span class="hl str">&quot;vp-slice&quot;</span><span class="hl std">,</span> <span class="hl kwd">mask</span><span class="hl std">(maskShape))</span>
@@ -448,10 +453,10 @@
     but it does not support masks (or filters), so we only get the
     dark blue fill from the SVG image when we draw it in R.
   </p>
-<div class="chunk" id="unnamed-chunk-16"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">test1</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">readPicture</span><span class="hl std">(</span><span class="hl str">&quot;test1.svg&quot;</span><span class="hl std">)</span>
+<div class="chunk" id="unnamed-chunk-17"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">test1</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">readPicture</span><span class="hl std">(</span><span class="hl str">&quot;test1.svg&quot;</span><span class="hl std">)</span>
 <span class="hl kwd">grid.picture</span><span class="hl std">(test1)</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-16-1.png" title="An imported diagram drawn in R" alt="An imported diagram drawn in R" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-17-1.png" title="An imported diagram drawn in R" alt="An imported diagram drawn in R" class="plot" /></div></div>
     <p>
     The following code demonstrates that we can
     fix the problem by exporting the
@@ -459,7 +464,7 @@
     masks (and filters).  The <code>delayContent</code> argument
     is significant, but it will be explained later.
   </p>
-<div class="chunk" id="unnamed-chunk-17"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;test1-gridSVG.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
+<div class="chunk" id="unnamed-chunk-18"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;test1-gridSVG.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
 <span class="hl kwd">grid.picture</span><span class="hl std">(test1,</span> <span class="hl kwc">ext</span><span class="hl std">=</span><span class="hl str">&quot;gridSVG&quot;</span><span class="hl std">,</span> <span class="hl kwc">delayContent</span><span class="hl std">=</span><span class="hl num">FALSE</span><span class="hl std">)</span>
 <span class="hl kwd">dev.off</span><span class="hl std">()</span>
 </pre></div>
@@ -477,10 +482,10 @@
     pass to <code>plot_grid()</code>.  The result is not good - part of 
     the imported image has disappeared!
   </p>
-<div class="chunk" id="unnamed-chunk-18"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(cowplot)</span>
+<div class="chunk" id="unnamed-chunk-19"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(cowplot)</span>
 </pre></div>
 </div></div>
-<div class="chunk" id="unnamed-chunk-19"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;test1-gridSVG-right.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">6</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
+<div class="chunk" id="unnamed-chunk-20"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;test1-gridSVG-right.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">6</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
 <span class="hl kwd">grid.rect</span><span class="hl std">(</span><span class="hl kwc">gp</span><span class="hl std">=</span><span class="hl kwd">gpar</span><span class="hl std">(</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl num">NA</span><span class="hl std">,</span> <span class="hl kwc">fill</span><span class="hl std">=</span><span class="hl str">&quot;grey80&quot;</span><span class="hl std">))</span>
 <span class="hl std">ggplot</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">qplot</span><span class="hl std">(disp, mpg,</span> <span class="hl kwc">data</span><span class="hl std">=mtcars)</span>
 <span class="hl std">test1grob</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">pictureGrob</span><span class="hl std">(test1,</span> <span class="hl kwc">ext</span><span class="hl std">=</span><span class="hl str">&quot;gridSVG&quot;</span><span class="hl std">,</span> <span class="hl kwc">delayContent</span><span class="hl std">=</span><span class="hl num">FALSE</span><span class="hl std">)</span>
@@ -516,7 +521,7 @@
     The code below demonstrates this and the resulting image is now
     correct.
   </p>
-<div class="chunk" id="unnamed-chunk-20"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;test1-gridSVG-right-delay.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">6</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
+<div class="chunk" id="unnamed-chunk-21"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;test1-gridSVG-right-delay.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">6</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
 <span class="hl kwd">grid.rect</span><span class="hl std">(</span><span class="hl kwc">gp</span><span class="hl std">=</span><span class="hl kwd">gpar</span><span class="hl std">(</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl num">NA</span><span class="hl std">,</span> <span class="hl kwc">fill</span><span class="hl std">=</span><span class="hl str">&quot;grey80&quot;</span><span class="hl std">))</span>
 <span class="hl std">ggplot</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">qplot</span><span class="hl std">(disp, mpg,</span> <span class="hl kwc">data</span><span class="hl std">=mtcars)</span>
 <span class="hl std">test1grob</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">pictureGrob</span><span class="hl std">(test1,</span> <span class="hl kwc">ext</span><span class="hl std">=</span><span class="hl str">&quot;gridSVG&quot;</span><span class="hl std">,</span> <span class="hl kwc">delayContent</span><span class="hl std">=</span><span class="hl num">TRUE</span><span class="hl std">)</span>
@@ -535,7 +540,7 @@
     <code>delayContent</code> argument explicitly.  The 
     following code will also produce the correct result.
   </p>
-<div class="chunk" id="unnamed-chunk-21"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;test1-gridSVG-right-delay.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">6</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
+<div class="chunk" id="unnamed-chunk-22"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">gridsvg</span><span class="hl std">(</span><span class="hl str">&quot;test1-gridSVG-right-delay.svg&quot;</span><span class="hl std">,</span> <span class="hl kwc">width</span><span class="hl std">=</span><span class="hl num">6</span><span class="hl std">,</span> <span class="hl kwc">height</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">res</span><span class="hl std">=</span><span class="hl num">96</span><span class="hl std">)</span>
 <span class="hl kwd">grid.rect</span><span class="hl std">(</span><span class="hl kwc">gp</span><span class="hl std">=</span><span class="hl kwd">gpar</span><span class="hl std">(</span><span class="hl kwc">col</span><span class="hl std">=</span><span class="hl num">NA</span><span class="hl std">,</span> <span class="hl kwc">fill</span><span class="hl std">=</span><span class="hl str">&quot;grey80&quot;</span><span class="hl std">))</span>
 <span class="hl std">ggplot</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">qplot</span><span class="hl std">(disp, mpg,</span> <span class="hl kwc">data</span><span class="hl std">=mtcars)</span>
 <span class="hl std">test1grob</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">pictureGrob</span><span class="hl std">(test1,</span> <span class="hl kwc">ext</span><span class="hl std">=</span><span class="hl str">&quot;gridSVG&quot;</span><span class="hl std">)</span>
@@ -605,7 +610,7 @@
     <p>
     Murrell, P. (2019). "SVG In, SVG Out" 
     Technical Report 2019-02, Department of Statistics, The University of Auckland. 
-    Version 1.
+    Version 2.
     [ <a href="how-to-cite.bib">bib</a> |
       <a href="http://dx.doi.org/10.17608/k6.auckland.11100386">DOI</a> | 
       <a href="http://stattech.blogs.auckland.ac.nz/2019/11/25/2019-02-svg-in-svg-out/">http</a> ]

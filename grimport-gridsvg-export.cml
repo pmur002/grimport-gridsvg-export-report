@@ -44,7 +44,14 @@
     <a href="http://orcid.org"><img alt="" src="https://www.stat.auckland.ac.nz/~paul/ORCID/ORCiD.png" style="width: 16px; height: 16px; vertical-align: middle" /></a> <span style="font-family: mono; font-size: small"><a href="http://orcid.org/0000-0002-3224-8858">http://orcid.org/0000-0002-3224-8858</a></span>
   </p>
   <p class="date">
-    Version 1:  original publication
+    Version 2:  
+    <rcode echo="FALSE" results="asis">
+cat(format(Sys.Date(), "%A %d %B %Y"))
+    </rcode>
+  </p>
+  <p class="date versionHistory">
+    Version 1:  original publication<br/>
+    Version 2:  added date
   </p>
 
   <rcode id="init" echo="FALSE" message="FALSE" results="hide">
@@ -546,7 +553,7 @@ dev.off()
   <p>
     Murrell, P. (2019). "SVG In, SVG Out" 
     Technical Report 2019-02, Department of Statistics, The University of Auckland. 
-    Version 1.
+    Version 2.
     [ <a href="how-to-cite.bib">bib</a> |
       <a href="http://dx.doi.org/10.17608/k6.auckland.11100386">DOI</a> | 
       <a href="http://stattech.blogs.auckland.ac.nz/2019/11/25/2019-02-svg-in-svg-out/">http</a> ]

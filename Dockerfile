@@ -6,7 +6,7 @@ MAINTAINER Paul Murrell <paul@stat.auckland.ac.nz>
 # add CRAN PPA
 RUN apt-get update && apt-get install -y apt-transport-https
 RUN echo 'deb https://cloud.r-project.org/bin/linux/ubuntu xenial-cran35/' > /etc/apt/sources.list.d/cran.list
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
 
 # Install additional software
 # R stuff
